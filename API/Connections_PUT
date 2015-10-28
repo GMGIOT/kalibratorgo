@@ -1,0 +1,53 @@
+Запрос:
+{
+	[
+		{
+			"Type" : "Serial" // Тип соединениея
+			"Device" : "/dev/ttyUSB0" // устройство
+			"Protocol" : "ModbusRTU" // Протокол
+		},
+		{
+			// еще подключение
+		}
+	]
+}
+
+
+Ответ:
+{
+	[
+		{
+			"id" : 0
+			"Type" : "Serial"
+			"Device" : "/dev/ttyUSB0"
+			"Protocol" : "ModbusRTU"
+			"Status" : "used"
+			"UsedBy" : 0
+			"Error" : ""
+		},
+		{
+			"id" : 1		
+			"Type" : "Serial"
+			"Device" : "/dev/ttyUSB1"
+			"Protocol" : "ModbusRTU"
+			"Status" : "blocked"
+			"Error" : "No such device"
+		},
+		{
+			"id" : 2
+			"Type" : "Serial"
+			"Device" : "/dev/ttyACM0"
+			"Protocol" : "ModbusRTU"
+			"Status" : "blocked"
+			"Error" : "Permission denied"
+		},
+		{
+			"id" : 3
+			"Type" : "Serial"
+			"Device" : "/dev/ttyACM1"
+			"Protocol" : "ModbusRTU"
+			"Status" : "used"
+			"Error" : "Already opened"
+		},
+	]
+}

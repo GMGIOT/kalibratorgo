@@ -1,0 +1,19 @@
+Запрос:
+<url>/connections
+
+Ответ:
+{
+	[
+		{ 
+			"id" : 123 // идентификатор
+			"Type" : "Serial" // Тип соединениея
+			"Device" : "/dev/ttyUSB0" // устройство
+			"Protocol" : "ModbusRTU" // Протокол
+			"Status" : "available" //  available | used | blocked
+			"UsedBy" : 1 // датчиков использует это подключеине
+		},
+		{
+			// Другое подключение
+		}
+	]
+}
