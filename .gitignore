@@ -1,0 +1,6 @@
+*~
+*.swp
+.DS_Store
+examples/rtu-client
+examples/tcp-client
+.project
