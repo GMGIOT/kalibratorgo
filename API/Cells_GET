@@ -1,0 +1,71 @@
+Получить список отслеживаемых ячеек
+
+Запрос:
+<url>/cells
+
+Ответ:
+{
+	[
+		{
+			"id" : "0_6_I0",  // <соединение>_<датчик>_<тип_ячейки><номер> (input0)
+			"sensorID" : "0_6", // ID датчика
+			"Name" : "Давление",
+			"type" : "hard", // физическая ячейка
+			"valuetype" : "float", // тип занчения
+			"value" : 32784.35, // значение
+			"expression" : "value(0_6_I0)", // для настоящих ячеек == значиние ячейки
+			"updatePeriod" : 0.1, // период обновления [c]
+			"updatePeriodEditable" : true, // Можно управлять периодом автообновления? 
+			"lastUpdated" : <UNIX timestamp>, // обновлено последний раз
+			"autoupdate" : true, // автоапдейт включен
+			"softCells" : [
+				"0_6_V0"
+			], // зависимые виртуальные ячейки
+			"LastError" : "" // Поледняя ошибка
+		},
+		{
+			"id" : "0_6_D1",  // <соединение>_<датчик>_<тип_ячейки><номер> (Discrete input 1)
+			"sensorID" : "0_6",
+			"Name" : "Неисправность канала температуры",
+			"type" : "hard",
+			"valuetype" : "bool",
+			"value" : false,
+			"expression" : "value(0_6_D1)",
+			"updatePeriod" : 1,
+			"updatePeriodEditable" : true,
+			"lastUpdated" : <UNIX timestamp>,
+			"autoupdate" : false,
+			"softCells" : [],
+			"LastError" : ""
+		},
+		{
+			"id" : "0_6_V0",  // <соединение>_<датчик>_<тип_ячейки><номер> (Virtual 0)
+			"sensorID" : "0_6",
+			"Name" : "Считаем вручную 0",
+			"type" : "soft",
+			"valuetype" : "float",
+			"value" : 23.5,
+			"expression" : "158.23 + 2.38*(value(0_6_I0) - 35.789) + 1.38E-2*(value(0_6_I0) - 35.789)^2", // выражеине
+			"updatePeriod" : 1,
+			"updatePeriodEditable" : true,
+			"lastUpdated" : <UNIX timestamp>,
+			"autoupdate" : true,
+			"LastError" : ""
+		},
+		{
+			
+			"id" : "0_6_D15",  // <соединение>_<датчик>_<тип_ячейки><номер> (Discrete input 15)
+			"sensorID" : "0_6",
+			"Name" : "------",
+			"type" : "hard",
+			"valuetype" : "bool",
+			"value" : false,
+			"expression" : "value(0_6_D15)",
+			"updatePeriod" : 1,
+			"updatePeriodEditable" : true,
+			"lastUpdated" : <UNIX timestamp>,
+			"autoupdate" : false,
+			"LastError" : "Modbus: Illegal Data Address" // ошибка modbus
+		}
+	]
+}

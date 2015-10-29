@@ -1,0 +1,59 @@
+Добавить ячейку в отслеживаемые
+
+Запрос:
+{
+	"id" : "0_4_I0",
+	"updatePeriod" : 0.1, // период обновления [c]
+	"autoupdate" : true, // автоапдейт включен
+	"force" : true // добавить, даже если ошибка первого чтения
+}
+
+{
+	"id" : "0_4_V1",
+	"type" : "soft", // soft-ячейка
+	"expression" : "158.23 + 2.38*(value(0_6_I0) - 35.789) + 1.38E-2*(value(0_6_I0) - 35.789)^2", // выражеине
+	"updatePeriod" : 1, // период обновления [c]
+	"autoupdate" : true, // автоапдейт включен
+	"force" : true // добавить, даже если ошибка первого чтения
+}
+
+
+Ответ OK:
+{
+	"id" : "0_6_I0",  // <соединение>_<датчик>_<тип_ячейки><номер> (input0)
+	"sensorID" : "0_6", // ID датчика
+	"Name" : "Давление",
+	"type" : "hard", // физическая ячейка
+	"valuetype" : "float", // тип занчения
+	"value" : 32784.35, // значение
+	"expression" : "value(0_6_I0)", // для настоящих ячеек == значиние ячейки
+	"updatePeriod" : 0.1, // период обновления [c]
+	"updatePeriodEditable" : true, // Можно управлять периодом автообновления? 
+	"lastUpdated" : <UNIX timestamp>, // обновлено последний раз
+	"autoupdate" : true, // автоапдейт включен
+	"softCells" : [], // зависимые виртуальные ячейки
+	"LastError" : "" // Поледняя ошибка
+}
+
+Ответ С ошибкой:
+{
+	"id" : "0_6_I0", 
+	"LastError" : "No such device" 
+}
+
+// force
+{
+	"id" : "0_6_I0",
+	"sensorID" : "0_6",
+	"Name" : "Давление",
+	"type" : "hard",
+	"valuetype" : "float",
+	"value" : 32784.35,
+	"expression" : "value(0_6_I0)",
+	"updatePeriod" : 0.1,
+	"updatePeriodEditable" : true,
+	"lastUpdated" : <UNIX timestamp>,
+	"autoupdate" : true,
+	"softCells" : [],
+	"LastError" : "Modbus illedal function"
+}

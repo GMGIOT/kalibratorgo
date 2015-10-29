@@ -1,3 +1,5 @@
+Заменить список соединенеий на новый
+
 Запрос:
 {
 	[
@@ -17,36 +19,36 @@
 {
 	[
 		{
-			"id" : 0
-			"Type" : "Serial"
-			"Device" : "/dev/ttyUSB0"
-			"Protocol" : "ModbusRTU"
-			"Status" : "used"
-			"UsedBy" : 0
+			"id" : 0,
+			"Type" : "Serial",
+			"Device" : "/dev/ttyUSB0",
+			"Protocol" : "ModbusRTU",
+			"Status" : "used",
+			"UsedBy" : 0,
 			"Error" : ""
 		},
 		{
-			"id" : 1		
-			"Type" : "Serial"
-			"Device" : "/dev/ttyUSB1"
-			"Protocol" : "ModbusRTU"
-			"Status" : "blocked"
-			"Error" : "No such device"
+			"id" : 1,
+			"Type" : "Serial",
+			"Device" : "/dev/ttyUSB1",
+			"Protocol" : "ModbusRTU",
+			"Status" : "blocked",
+			"Error" : "No such device",
 		},
 		{
-			"id" : 2
-			"Type" : "Serial"
-			"Device" : "/dev/ttyACM0"
-			"Protocol" : "ModbusRTU"
-			"Status" : "blocked"
+			"id" : 2,
+			"Type" : "Serial",
+			"Device" : "/dev/ttyACM0",
+			"Protocol" : "ModbusRTU",
+			"Status" : "blocked",
 			"Error" : "Permission denied"
 		},
 		{
-			"id" : 3
-			"Type" : "Serial"
-			"Device" : "/dev/ttyACM1"
-			"Protocol" : "ModbusRTU"
-			"Status" : "used"
+			"id" : 3,
+			"Type" : "Serial",
+			"Device" : "/dev/ttyACM1",
+			"Protocol" : "ModbusRTU",
+			"Status" : "used",
 			"Error" : "Already opened"
 		},
 	]

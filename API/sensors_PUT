@@ -1,0 +1,86 @@
+Переоткрыть датчики согласно новой схеме
+
+Запрос:
+{
+	[
+		{
+			"Type" : "Serial",
+			"Protocols" : [
+				{
+					"Protocol" : "ModbusRTU",
+					"devices" : [
+						{
+							"Type" : "0xDB00", // датчик, который биндим
+							"connectionID" : 0,  // куда подключен
+							"address" : 4, // тут может быть что-то другое для других бэкэндов
+							"Options" : "force" // добавить, даже если нет ответа на проверочный запрос
+						},
+						{
+							"Type" : "0xDB01",
+							"connectionID" : 0,
+							"address" : 10
+						},
+						{
+							"Type" : "0xDB00",
+							"connectionID" : 1",
+							"address" : 5
+						},
+						{
+							"Type" : "0xDB01",
+							"connectionID" : 0",
+							"address" : 4
+						}
+					]		
+				}
+			]
+		}
+	]
+}
+
+Ответ:
+{
+	[
+		{
+			"Type" : "Serial",
+			"Protocols" : [
+				{
+					"Protocol" : "ModbusRTU",
+					"devices" : [
+						{
+							"id" : "0_4",
+							"Type" : "0xDB00",
+							"Name" : "Датчик давления",
+							"connectionID" : 0,
+							"address" : 4,
+							"status" : "disconnected" // добавлен, но не обнаружен
+						},
+						{
+							"id" : "0_10",
+							"Type" : "0xDB01",
+							"Name" : "Датчик температуры",
+							"connectionID" : 0,
+							"address" : 10,
+							"status" : "ok" // работает
+						},
+						{
+							"id" : "1_5",
+							"Type" : "0xDB00",
+							"Name" : "Датчик давления",
+							"connectionID" : 1,
+							"address" : 5,
+							"status" : "noconnection" // нет такого подключения
+						},
+						{
+							"id" : "0_4",
+							"Type" : "0xDB01",
+							"Name" : "Датчик температуры",
+							"connectionID" : 0,
+							"address" : 4,
+							"status" : "duplicate" // 2 датчика на 1 адрес запрещено
+						},
+					]		
+				}
+			]
+		}
+	]
+}

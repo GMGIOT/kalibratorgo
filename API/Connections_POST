@@ -1,27 +1,33 @@
+Открыть новое соединение. Существующие не затрагиваются.
+
 Зпрос:
 {
-	"Type" : "Serial" // Тип соединениея
-	"Device" : "/dev/ttyUSB0" // устройство
-	"Protocol" : "ModbusRTU" // Протокол
+	"Type" : "Serial", // Тип соединениея
+	"Device" : "/dev/ttyUSB0", // устройство
+	"speed" : 57600, // скорость
+	"mode" : "8N1", // режим
+	"Protocol" : "ModbusRTU", // Протокол
 }
 
 Ответ ОК:
 {
-	"id" : 0
-	"Type" : "Serial"
-	"Device" : "/dev/ttyUSB0"
-	"Protocol" : "ModbusRTU"
-	"Status" : "used"
-	"UsedBy" : 0
+	"id" : 0,
+	"Type" : "Serial",
+	"Device" : "/dev/ttyUSB0",
+	"Protocol" : "ModbusRTU",
+	"speed" : 57600,
+	"mode" : "8N1",
+	"Status" : "used",
+	"UsedBy" : 0,
 	"Error" : ""
 }
 
 Ответ с ошибкой:
 {
-	"id" : 237		
-	"Type" : "Serial"
-	"Device" : "/dev/ttyUSB1"
-	"Protocol" : "ModbusRTU"
-	"Status" : "blocked"
+	"id" : 237,
+	"Type" : "Serial",
+	"Device" : "/dev/ttyUSB1",
+	"Protocol" : "ModbusRTU",
+	"Status" : "blocked",
 	"Error" : "No such device"
 }

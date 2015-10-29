@@ -1,0 +1,46 @@
+Открыть датчик
+
+Запрос:
+{
+	[
+		{
+			"Type" : "Serial",
+			"Protocols" : [
+				{
+					"Protocol" : "ModbusRTU",
+					"devices" : [
+						{
+							"Type" : "0xDB00", // датчик, который биндим
+							"connectionID" : 0,  // куда подключен
+							"address" : 4, // тут может быть что-то другое для других бэкэндов
+							"Options" : "force" // добавить, даже если нет ответа на проверочный запрос
+						}
+				}
+			]
+		}
+	]
+}
+
+Ответ:
+{
+	[
+		{
+			"Type" : "Serial",
+			"Protocols" : [
+				{
+					"Protocol" : "ModbusRTU",
+					"devices" : [
+						{
+							"id" : "0_4",
+							"Type" : "0xDB00",
+							"Name" : "Датчик давления",
+							"connectionID" : 0,
+							"address" : 4,
+							"status" : "disconnected" // добавлен, но не обнаружен
+						}
+					]
+				}
+			]
+		}
+	]
+}

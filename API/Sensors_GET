@@ -1,0 +1,36 @@
+Получить список подключенных датчиков
+
+Запрос:
+<url>/sensors
+
+Ответ:
+{
+	[
+		{
+			"Type" : "Serial",
+			"Protocols" : [
+				{
+					"Protocol" : "ModbusRTU",
+					"devices" : [
+						{
+							"id" : "0_4",
+							"Type" : "0xDB00", // датчик
+							"Name" : "Датчик давления",
+							"connectionID" : 0,  // куда подключен
+							"address" : 4, // тут может быть что-то другое для других бэкэндов
+							"status" : "ok" // какой-то статус
+						},
+						{
+							"id" : "0_10",
+							"Type" : "0xDB01",
+							"Name" : "Датчик температуры",
+							"connectionID" : 0,
+							"address" : 10,
+							"status" : "disconnected"
+						}
+					]		
+				}
+			]
+		}
+	]
+}
