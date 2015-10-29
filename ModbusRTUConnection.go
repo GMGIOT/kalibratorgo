@@ -13,7 +13,6 @@ import "C"
 import (
 	"errors"
 	"fmt"
-	"C"
 	"regexp"
 	"strconv"
 	"runtime"
@@ -52,15 +51,17 @@ type ModbusRTUConnection struct {
 	speed				int
 	serialMode			string
 	attachedDevicese	[](*ModbusRTUDevice)
-	hook				*ioCtlHook
+	hook				ioCtlHook
 	
 	ctx					*C.modbus_t
+	
+	rwCtlChan			chan int
 }
 
 var ModbusRTUConnections [](*ModbusRTUConnection)
 
 func NewModbusRTUConnection(DeviceName string,
-	Speed int, SerialMode string, Hook *ioCtlHook) (*ModbusRTUConnection, error) {
+	Speed int, SerialMode string, Hook ioCtlHook) (*ModbusRTUConnection, error) {
 	// is allready opened?
 	for _, connection := range ModbusRTUConnections {
 		if connection.Device() == DeviceName {
@@ -76,6 +77,21 @@ func NewModbusRTUConnection(DeviceName string,
 	
 	result := &ModbusRTUConnection{ deviceName : DeviceName, speed : Speed, 
 		serialMode : SerialMode, hook : Hook }
+	
+	if Hook != nil {
+		result.rwCtlChan = make(chan int)
+		
+		go func(oneByteTime time.Duration) {
+			for v := range result.rwCtlChan {
+				if v < 0 {
+					break
+				}
+				result.hook.OnStartTransmitting()
+				time.Sleep(oneByteTime * time.Duration(v))
+				result.hook.OnEndTransmitting()
+			}
+		}(time.Duration(math.Ceil(float64(time.Second * (1 + 8 + 0 + 1)) / float64(result.speed))))
+	}
 	
 	// try open
 	match := parser.FindStringSubmatch(result.serialMode)
@@ -132,6 +148,7 @@ func (this *ModbusRTUConnection) UsedBy() int {
 
 func finaliserModbusRTUConnection(obj *ModbusRTUConnection) {
 	log.Printf("Cleaning libmodbus structure")
+	obj.rwCtlChan <- (-1)
 	C.modbus_close(obj.ctx);
 	C.modbus_free(obj.ctx)
 }
@@ -160,7 +177,8 @@ func (this *ModbusRTUConnection) SetDebug(flag bool) {
 }
 
 func (this *ModbusRTUConnection) ProcessHook(messageLen int) {
-	messageLen += 4
+	messageLen += RTU_CONST_FIELDS_LEN
+	this.rwCtlChan <- messageLen
 }
 
 func (this *ModbusRTUConnection) ReadCoils(slave int8, startAddr int, nb int) ([]bool, error) {
