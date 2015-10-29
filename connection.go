@@ -18,5 +18,3 @@ type Connection interface {
 	Status() int
 	UsedBy() int
 }
-
-var Connections []Connection
