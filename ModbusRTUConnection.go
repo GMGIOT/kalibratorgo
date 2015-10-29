@@ -99,15 +99,16 @@ func NewModbusRTUConnection(DeviceName string,
 		result.ctx = C.modbus_new_rtu(C.CString(result.deviceName), C.int(result.speed),
 			C.char('N'), C.int(8), C.int(1))
 	} else {
-		databits, _ := strconv.ParseInt(match[1 + 1], 10, 32)
-		stopbits, _ := strconv.ParseInt(match[1 + 3], 10, 32)
+		databits, _ := strconv.ParseInt(match[1 + 0], 10, 32)
+		stopbits, _ := strconv.ParseInt(match[1 + 2], 10, 32)
 		result.ctx = C.modbus_new_rtu(C.CString(result.deviceName), C.int(result.speed),
-			C.char(match[1 + 2][0]),
+			C.char(match[1 + 1][0]),
 			C.int(databits),
 			C.int(stopbits))
 	}
 	if result.ctx == nil {
-		return nil, errors.New("Unable to create the libmodbus context")
+		return nil, errors.New(fmt.Sprintf("Unable to create the libmodbus context\n%s",
+				C.GoString(C.modbus_strerror(C.getErrno()))))
 	}
 	runtime.SetFinalizer(result, finaliserModbusRTUConnection)
 	
@@ -147,10 +148,12 @@ func (this *ModbusRTUConnection) UsedBy() int {
 }
 
 func finaliserModbusRTUConnection(obj *ModbusRTUConnection) {
-	log.Printf("Cleaning libmodbus structure")
-	obj.rwCtlChan <- (-1)
-	C.modbus_close(obj.ctx);
+	log.Print("Cleaning libmodbus structure")
+	C.modbus_close(obj.ctx)
 	C.modbus_free(obj.ctx)
+	if obj.hook != nil {
+		obj.rwCtlChan <- (-1)
+	}
 }
 
 func (this *ModbusRTUConnection) Timeout() time.Duration {
@@ -382,4 +385,27 @@ func (this *ModbusRTUConnection) AttachedDevice(dev AbstarctDevice) error {
 		}
 	}
 	return errors.New(fmt.Sprintf("Device requiered incompotable protocol %s", dev.Protocol()))
+}
+
+func (this *ModbusRTUConnection) Close(recursive bool) error {
+	if recursive {
+		for _, dev := range this.attachedDevicese {
+			dev.Close(true)
+		}
+		return nil
+	} else {
+		if this.UsedBy() > 0 {
+			return errors.New("Connection still used")
+		}
+		var n int
+		var item *ModbusRTUConnection
+		for n, item = range ModbusRTUConnections {
+			if item == this {
+				break
+			}
+		}
+		ModbusRTUConnections, ModbusRTUConnections[len(ModbusRTUConnections)-1] =
+			append(ModbusRTUConnections[:n], ModbusRTUConnections[n+1:]...), nil
+		return nil
+	}
 }

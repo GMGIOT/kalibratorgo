@@ -17,4 +17,5 @@ type Connection interface {
 	Protocol() string
 	Status() int
 	UsedBy() int
+	Close(recursive bool) error
 }
