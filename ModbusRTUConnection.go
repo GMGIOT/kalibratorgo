@@ -50,7 +50,7 @@ type ModbusRTUConnection struct {
 	deviceName			string
 	speed				int
 	serialMode			string
-	attachedDevicese	[](*ModbusRTUDevice)
+	attachedDevices		[](*ModbusRTUDevice)
 	hook				ioCtlHook
 	
 	ctx					*C.modbus_t
@@ -114,7 +114,17 @@ func NewModbusRTUConnection(DeviceName string,
 	
 	result.id = index
 	index++
-	ModbusRTUConnections = append(ModbusRTUConnections, result)
+	if len(ModbusRTUConnections) != 0 &&
+		ModbusRTUConnections[len(ModbusRTUConnections) - 1] == nil {
+		for i:= len(ModbusRTUConnections) - 1; i > -1; i-- {
+			if ModbusRTUConnections[i] != nil {
+				ModbusRTUConnections[i + 1] = result
+				break
+			}
+		}
+	} else {
+		ModbusRTUConnections = append(ModbusRTUConnections, result)
+	}
 	
 	return result, nil
 }
@@ -140,11 +150,15 @@ func (this *ModbusRTUConnection) Protocol() string {
 }
 
 func (this *ModbusRTUConnection) Status() int {
-	return Connection_unknown
+	if len(this.attachedDevices) > 0 {
+		return Connection_used
+	} else {
+		return Connection_available
+	} 
 }
 
 func (this *ModbusRTUConnection) UsedBy() int {
-	return len(this.attachedDevicese)
+	return len(this.attachedDevices)
 }
 
 func finaliserModbusRTUConnection(obj *ModbusRTUConnection) {
@@ -377,9 +391,9 @@ func (this *ModbusRTUConnection) WriteHoldings(slave int8, startAddr int, values
 
 func (this *ModbusRTUConnection) AttachedDevice(dev AbstarctDevice) error {
 	if d, ok := dev.(ModbusRTUDevice); ok {
-		if d.ConnectionID() != this.ID() {
-			this.attachedDevicese = append(this.attachedDevicese, &d)
-			d.SetConnection(this)
+		if d.Connection() != this {
+			this.attachedDevices = append(this.attachedDevices, &d)
+			d.BindTo(this)
 		} else {
 			return errors.New(fmt.Sprintf("Device allready attached to connection %d", this.ID()))
 		}
@@ -389,7 +403,7 @@ func (this *ModbusRTUConnection) AttachedDevice(dev AbstarctDevice) error {
 
 func (this *ModbusRTUConnection) Close(recursive bool) error {
 	if recursive {
-		for _, dev := range this.attachedDevicese {
+		for _, dev := range this.attachedDevices {
 			dev.Close(true)
 		}
 		return nil

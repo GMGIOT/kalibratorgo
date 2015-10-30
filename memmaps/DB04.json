@@ -1,0 +1,326 @@
+{
+    "DevID"                         : "0xDB04",
+    "Class"                         : "Датчик",
+    "Description"                   : "разностный",
+    "maxSimulateneousCellsToRead"   : 11,
+    "HoldingRegisters"  :
+        [
+        {
+            "Address"       : "0x0000",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadOnly",
+            "Name"          : "Идентификатор",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0001",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Серийный номер",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0002",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Опорная частота",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+        },
+        {
+            "Address"       : "0x0004",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Средняя частота давления [1]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+        },
+		{
+            "Address"       : "0x0005",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Средняя частота давления [2]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+        },
+        {
+            "Address"       : "0x0010",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Адрес",
+            "Category"      : "Настройка",
+            "Description"   : "устройства ModBus, в диапазоне 1..247"
+        },
+		{
+            "Address"       : "0x0010",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Адрес",
+            "Category"      : "Настройка",
+            "MinValue"      : 1,
+            "MaxValue"      : 247,
+            "Description"   : "устройства ModBus, в диапазоне 1..247"
+        },
+        {
+            "Address"       : "0x0011",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Скорость обмена",
+            "Category"      : "Настройка",
+			"variants"      : [ 2400, 9600, 19200, 38400, 57600 ],
+            "variantsAdvanced" : [
+                { "Display" : 115200,
+                    "value"   : "0xffff"
+                }
+            ],
+            "Description"   : "[бод]"
+        },
+        {
+            "Address"       : "0x0012",
+			"ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Пароль доступа",
+            "Category"      : "Hiden",
+			"Serializable"  : false
+        },
+        {
+            "Address"       : "0x0014",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [1]",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[мс]"
+        },
+		{
+            "Address"       : "0x0015",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [2]",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[мс]"
+        },
+		{
+            "Address"       : "0x0016",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Период сетки",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[мс]"
+        },
+        {
+            "Address"       : "0x0018",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Уставка",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0020",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент T10",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0022",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C11",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0024",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C12",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0026",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C13",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0028",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент F10",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0030",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент T20",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0032",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C21",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0034",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C22",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0036",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C23",
+            "Category"      : "Коэффициенты"
+        },
+		{
+            "Address"       : "0x0038",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент F20",
+            "Category"      : "Коэффициенты"
+        }
+	],
+	"InputRegisters"    :
+		[
+		{
+            "Address"       : "0x0000",
+			"ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Канал [1]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0002",
+			"ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Канал [2]",
+            "Category"      : "Измеренные значения"
+        },
+        {
+            "Address"       : "0x0004",
+            "ValueType"     : "float",
+            "Name"          : "Температура электроники",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0010",
+			"ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Частота канала [1]",
+            "Category"      : "Измеренные значения",
+			"Description"   : "[Гц]"
+        },
+		{
+            "Address"       : "0x0012",
+			"ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Частота канала [2]",
+            "Category"      : "Измеренные значения",
+			"Description"   : "[Гц]"
+        }
+	],
+	"Coils"             :
+        [
+		{
+            "Address"       : "0x0000",
+            "Access"        : "ReadOnly",
+            "Name"          : "Резервный запуск",
+            "Category"      : "Настройка",
+			"Description"   : "В резервном запуске (при переполюсовке питания) загружаются начальные настройки"
+        },
+		{
+            "Address"       : "0x0001",
+            "Access"        : "ReadWrite",
+            "Name"          : "Режим счетчика",
+            "Category"      : "Настройка",
+			"Description"   : "Подключение внутреннего генератора"
+        },
+        {
+            "Address"       : "0x0002",
+            "Access"        : "ReadWrite",
+            "Name"          : "Подключение канала давления",
+            "Category"      : "Настройка"
+        },
+        {
+            "Address"       : "0x0003",
+            "Access"        : "ReadWrite",
+            "Name"          : "Подключение канала температуры",
+            "Category"      : "Настройка"
+        },
+        {
+            "Address"       : "0x0004",
+            "Access"        : "ReadWrite",
+            "Name"          : "Корректировка опорника",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0008",
+            "Access"        : "ReadWrite",
+            "Name"          : "Запись настроек",
+            "Category"      : "Hiden"
+        },
+		{
+            "Address"       : "0x0009",
+            "Access"        : "ReadWrite",
+            "Name"          : "Изменение настроек",
+            "Category"      : "Hiden"
+        },
+        {
+            "Address"       : "0x000A",
+            "Access"        : "ReadWrite",
+            "Name"          : "Калибровка опорника",
+            "Category"      : "Настройка",
+            "Description"   : "Флаг перевода датчика в режим, при котором он на одной из ног передает сигнал с опорного генератора, перестает общаться по протоколу"
+        },
+        {
+            "Address"       : "0x000B",
+            "Access"        : "ReadWrite",
+            "Name"          : "Режим непрерывной выдачи данных",
+            "Category"      : "Hiden"
+        },
+		{
+            "Address"       : "0x000C",
+            "Access"        : "ReadWrite",
+            "Name"          : "Режим энергосбережения",
+            "Category"      : "Hiden"
+        }
+	],
+    "DiscreteInputs"    :
+        [
+		{
+            "Address"       : "0x0000",
+            "Name"          : "Неисправность канала [1]",
+            "Category"      : "Коды ошибок"
+        },
+        {
+            "Address"       : "0x0001",
+            "Name"          : "Неисправность канала [2]",
+            "Category"      : "Коды ошибок"
+        },
+        {
+            "Address"       : "0x0002",
+            "Name"          : "Критическая температура датчика [1]",
+            "Category"      : "Коды ошибок"
+        },
+        {
+            "Address"       : "0x0003",
+            "Name"          : "Критическая температура датчика [2]",
+            "Category"      : "Коды ошибок"
+        },
+        {
+            "Address"       : "0x0004",
+            "Name"          : "Неверные настройки датчика [1]",
+            "Category"      : "Коды ошибок"
+        },
+        {
+            "Address"       : "0x0005",
+            "Name"          : "Неверные настройки датчика [2]",
+            "Category"      : "Коды ошибок"
+        }
+    ]
+}

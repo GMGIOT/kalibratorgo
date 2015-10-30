@@ -1,0 +1,424 @@
+{
+    "DevID"                         : "0xDB81",
+    "Class"                         : "ССД",
+    "Description"                   : "РЧ-12-04",
+    "maxSimulateneousCellsToRead"   : 125,
+    "HoldingRegisters"  :
+        [
+        {
+            "Address"       : "0x0000",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadOnly",
+            "Name"          : "Идентификатор",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0001",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Серийный номер",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0002",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Адрес",
+            "Category"      : "Настройка",
+            "MinValue"      : 1,
+            "MaxValue"      : 247,
+            "Description"   : "устройства ModBus, в диапазоне 1..247"
+        },
+        {
+            "Address"       : "0x0003",
+            "ValueType"     : "uint32_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Скорость обмена (по EIA-485)",
+            "Category"      : "Настройка",
+			"variants"      : [ 2400, 9600, 19200, 38400, 57600 ],
+            "Description"   : "(по EIA-485), [бод]"
+        },
+		{
+            "Address"       : "0x0006",
+            "ValueType"     : "double",
+            "Access"        : "ReadWrite",
+            "Name"          : "Частота внутреннего генератора",
+            "Category"      : "Настройка",
+			"Description"   : "[Гц]"
+        },
+		{
+            "Address"       : "0x000A",
+            "ValueType"     : "double",
+            "Access"        : "ReadWrite",
+            "Name"          : "Частота внешнего генератора",
+            "Category"      : "Настройка",
+			"Description"   : "[Гц]"
+        },
+		{
+            "Address"       : "0x000E",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность внутреннего генератора",
+            "Category"      : "Настройка",
+			"Description"   : "[ppm]"
+        },
+		{
+            "Address"       : "0x000F",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность внешнего генератора",
+            "Category"      : "Настройка",
+			"Description"   : "[ppm]"
+        },
+		{
+            "Address"       : "0x0010",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Источник синхросигнала",
+            "Category"      : "Настройка",
+            "variantsAdvanced" : [
+                { "Display" : "Внутренний",
+                    "value"	: "0"
+                },
+                { "Display" : "Внешний",
+                    "value"	: "1"
+                }
+            ]
+		},
+		{
+            "Address"       : "0x0011",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Максимальное время измерения канала",
+            "Category"      : "Настройка",
+            "Description"   : "[с]"
+        },
+        {
+            "Address"       : "0x0020",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения каналов [Max:0]",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[с]"
+        },
+        {
+            "Address"       : "0x0022",
+			"ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения каналов [Max:0]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+        },
+		{
+            "Address"       : "0x0024",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 0]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0026",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 1]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0028",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 2]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x002A",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 3]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x002C",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 4]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x002E",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 5]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0030",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 6]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0032",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 7]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0034",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 8]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0036",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [ 9]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0038",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [10]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x003A",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Время измерения канала [11]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[с]"
+		},
+		{
+            "Address"       : "0x0056",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 0]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x0058",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 1]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x005A",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 2]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x005C",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 3]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x005E",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 4]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x0060",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 5]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x0062",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 6]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x0064",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 7]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x0066",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 8]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x0068",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [ 9]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x006A",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [10]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		},
+		{
+            "Address"       : "0x006C",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Погрешность измерения канала [11]",
+            "Category"      : "Коэффициенты",
+			"Description"   : "[Гц]"
+		}
+    ],
+    "InputRegisters"    :
+        [
+		{
+            "Address"       : "0x0000",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 0]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0004",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 1]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0008",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 2]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x000C",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 3]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0010",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 4]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0014",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 5]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0018",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 6]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x001C",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 7]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0020",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [ 8]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0024",
+            "ValueType"     : "double",
+            "Access"        : "ReadOnly",
+            "Name"          : "Частота канала [ 9]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0028",
+            "ValueType"     : "double",
+            "Name"          : "Частота канала [10]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x002C",
+            "ValueType"     : "double",
+            "Access"        : "ReadOnly",
+            "Name"          : "Частота канала [11]",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0060",
+            "ValueType"     : "double",
+            "Name"          : "Частота внешнего генератора",
+            "Category"      : "Информация"
+        }
+    ],
+    "Coils"             :
+        [
+		{
+            "Address"       : "0x0000",
+            "Access"        : "ReadWrite",
+            "Name"          : "Запись настроек",
+            "Category"      : "Hiden",
+			"Description"   : "Запись настроек"
+        }
+    ],
+    "DiscreteInputs"    :
+        [
+		{
+            "Address"       : "0x0001",
+            "Name"          : "Ошибочные настройки",
+            "Category"      : "Флаги ошибок",
+			"Description"   : "Например, после сброса настроек"
+        },
+		{
+            "Address"       : "0x0002",
+            "Name"          : "Неверная частота на внешнем входе",
+            "Category"      : "Флаги ошибок",
+			"Description"   : "Указанная и измеренная частоты внешнего синхросигнала расходятся"
+        },
+		{
+            "Address"       : "0x0003",
+            "Name"          : "На активном внешнем входе нет сигнала",
+            "Category"      : "Флаги ошибок",
+			"Description"   : "Выбран внешний вход как задающий, но на нём нет сигнала"
+        },
+		{
+            "Address"       : "0x0000",
+            "Name"          : "Ошибка внутренней памяти",
+            "Category"      : "Флаги ошибок"
+        }
+    ]
+}

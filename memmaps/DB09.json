@@ -1,0 +1,54 @@
+{
+    "DevID"                         : "0xDB09",
+    "Class"                         : "Адаптер",
+    "Description"                   : "Arinc 429",
+    "maxSimulateneousCellsToRead"   : 11,
+    "HoldingRegisters"  :
+        [
+        {
+            "Address"       : "0x0000",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadOnly",
+            "Name"          : "Идентификатор",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0001",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Серийный номер",
+            "Category"      : "Настройка"
+        }
+    ],
+    "InputRegisters"    :
+        [
+		{
+            "Address"       : "0x0000",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Давление",
+            "Category"      : "Измеренные значения"
+        }
+    ],
+    "Coils"             :
+        [
+		{
+            "Address"       : "0x0008",
+            "Access"        : "ReadWrite",
+            "Name"          : "Запись настроек",
+            "Category"      : "Hiden"
+        },
+		{
+            "Address"       : "0x0009",
+            "Access"        : "ReadWrite",
+            "Name"          : "Изменение настроек",
+            "Category"      : "Hiden"
+        },
+		{
+            "Address"       : "0x000f",
+            "Access"        : "ReadWrite",
+            "Name"          : "Данные по готовности",
+            "Category"      : "Настройка"
+        }
+    ]
+}

@@ -1,0 +1,177 @@
+{
+    "DevID"                         : "0xDBFD",
+    "Class"                         : "Контроллер",
+    "Description"                   : "клапанов дистанционный",
+	"maxSimulateneousCellsToRead"   : 10,
+    "HoldingRegisters"  :
+        [
+        {
+            "Address"       : "0x0000",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadOnly",
+            "Name"          : "Идентификатор",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0001",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Адрес",
+            "Category"      : "Настройка",
+            "MinValue"      : 1,
+            "MaxValue"      : 254,
+            "Description"   : "устройства ModBus, в диапазоне 1..247"
+        },
+		{
+            "Address"       : "0x0002",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Серийный номер",
+            "Category"      : "Настройка"
+        },
+		{
+            "Address"       : "0x0003",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Скорость обмена",
+            "Category"      : "Настройка",
+            "variants"      : [ 2400, 9600, 19200, 38400, 57600 ],
+            "variantsAdvanced" : [
+                { "Display" : 115200,
+                    "value"	: "0xffff"
+                }
+            ],
+            "Description"   : "[бод]"
+        },
+        {
+            "Address"       : "0x0004",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Пароль доступа",
+            "Category"      : "Hiden",
+            "Serializable"  : false
+        },
+        {
+            "Address"       : "0x0005",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Таймаут, автозакрытия клапанов",
+            "Category"      : "Настройка",
+            "Description"   : "[c]"
+        },
+        {
+            "Address"       : "0x0006",
+            "ValueType"     : "uint32_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "От входа 0",
+            "Category"      : "Настройка автоуправления клапанами"
+        },
+		{
+            "Address"       : "0x0008",
+            "ValueType"     : "uint32_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "От входа 1",
+            "Category"      : "Настройка автоуправления клапанами"
+        },
+		{
+            "Address"       : "0x000A",
+            "ValueType"     : "uint32_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "От входа 2",
+            "Category"      : "Настройка автоуправления клапанами"
+        },
+		{
+            "Address"       : "0x000C",
+            "ValueType"     : "uint32_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "От входа 3",
+            "Category"      : "Настройка автоуправления клапанами"
+        }
+    ],
+    "Coils"             :
+        [
+		{
+            "Address"       : "0x0000",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 0",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0001",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 1",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0002",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 2",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0003",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 3",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0004",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 4",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0005",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 5",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0006",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 6",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0007",
+            "Access"        : "ReadWrite",
+            "Name"          : "Клапан 7",
+            "Category"      : "Управление клапанами"
+        },
+		{
+            "Address"       : "0x0008",
+            "Access"        : "ReadWrite",
+            "Name"          : "Запись настроек",
+            "Category"      : "Внутренние"
+        },
+		{
+            "Address"       : "0x0009",
+            "Access"        : "ReadWrite",
+            "Name"          : "Изменение настроек",
+            "Category"      : "Внутренние"
+        }
+    ],
+    "DiscreteInputs"    :
+        [
+		{
+            "Address"       : "0x0000",
+            "Name"          : "Вход 0",
+            "Category"      : "Дискретные входы"
+        },
+		{
+            "Address"       : "0x0001",
+            "Name"          : "Вход 1",
+            "Category"      : "Дискретные входы"
+        },
+		{
+            "Address"       : "0x0002",
+            "Name"          : "Вход 2",
+            "Category"      : "Дискретные входы"
+        },
+		{
+            "Address"       : "0x0003",
+            "Name"          : "Вход 3",
+            "Category"      : "Дискретные входы"
+        }
+    ]
+}

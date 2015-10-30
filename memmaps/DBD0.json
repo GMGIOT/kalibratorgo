@@ -1,0 +1,349 @@
+{
+    "DevID"                         : "0xDBD0",
+    "Class"                         : "Устройство",
+    "Description"                   : "Полиджойстик",
+    "maxSimulateneousCellsToRead"   : 11,
+    "HoldingRegisters"  :
+        [
+        {
+            "Address"       : "0x0000",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadOnly",
+            "Name"          : "Идентификатор",
+            "Category"      : "Настройка"
+        },
+        {
+            "Address"       : "0x0001",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Серийный номер",
+            "Category"      : "Настройка"
+        },{
+            "Address"       : "0x0004",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Uref [1]",
+            "Category"      : "Настройка",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0005",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Uref [2]",
+            "Category"      : "Настройка",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0006",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Iref [1]",
+            "Category"      : "Настройка",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0007",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Iref [2]",
+            "Category"      : "Настройка",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0010",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Адрес",
+            "Category"      : "Настройка",
+            "Description"   : "устройства ModBus, в диапазоне 1..247"
+        },
+        {
+            "Address"       : "0x0010",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Адрес",
+            "Category"      : "Настройка",
+            "MinValue"      : 1,
+            "MaxValue"      : 247,
+            "Description"   : "устройства ModBus, в диапазоне 1..247"
+        },
+        {
+            "Address"       : "0x0012",
+            "ValueType"     : "uint16_t",
+            "Access"        : "ReadWrite",
+            "Name"          : "Пароль доступа",
+            "Category"      : "Hiden",
+            "Serializable"  : false
+        },
+        {
+            "Address"       : "0x0014",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент R10",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0016",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент R20",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+		{
+            "Address"       : "0x0018",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент R30",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+		{
+            "Address"       : "0x0020",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент A1",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+		{
+            "Address"       : "0x0022",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент B1",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0024",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C1",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0026",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент A2",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x0028",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент B2",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+        {
+            "Address"       : "0x002A",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C2",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+		{
+            "Address"       : "0x002C",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент A3",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+		{
+            "Address"       : "0x002E",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент B3",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        },
+		{
+            "Address"       : "0x0030",
+            "ValueType"     : "float",
+            "Access"        : "ReadWrite",
+            "Name"          : "Коэффициент C3",
+            "Category"      : "Коэффициенты",
+            "Description"   : "[Попугаев]"
+        }
+    ],
+    "InputRegisters"    :
+        [
+        {
+            "Address"       : "0x0000",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение X",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0002",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение Y",
+            "Category"      : "Измеренные значения"
+        },
+        {
+            "Address"       : "0x0004",
+            "ValueType"     : "float",
+            "Name"          : "Температура электроники",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0006",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение R1",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0008",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение R2",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x000A",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение R3",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0010",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение U1",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0012",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение U2",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0014",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение I1",
+            "Category"      : "Измеренные значения"
+        },
+		{
+            "Address"       : "0x0016",
+            "ValueType"     : "float",
+            "Access"        : "ReadOnly",
+            "Name"          : "Значение I2",
+            "Category"      : "Измеренные значения"
+        }
+    ],
+    "Coils"             :
+        [
+        {
+            "Address"       : "0x0000",
+            "Access"        : "ReadOnly",
+            "Name"          : "Резервный запуск",
+            "Category"      : "Настройка",
+            "Description"   : "В резервном запуске (при переполюсовке питания) загружаются начальные настройки"
+        },
+        {
+            "Address"       : "0x0001",
+            "Access"        : "ReadWrite",
+            "Name"          : "Режим счетчика",
+            "Category"      : "Настройка",
+            "Description"   : "Подключение внутреннего генератора"
+        },
+        {
+            "Address"       : "0x0002",
+            "Access"        : "ReadWrite",
+            "Name"          : "Подключение канала давления",
+            "Category"      : "Настройка"
+        },
+        {
+            "Address"       : "0x0003",
+            "Access"        : "ReadWrite",
+            "Name"          : "Подключение канала температуры",
+            "Category"      : "Настройка"
+        },
+        {
+            "Address"       : "0x0004",
+            "Access"        : "ReadWrite",
+            "Name"          : "Корректировка опорника",
+            "Category"      : "Настройка"
+        },
+        {
+            "Address"       : "0x0008",
+            "Access"        : "ReadWrite",
+            "Name"          : "Запись настроек",
+            "Category"      : "Hiden",
+            "Serializable"  : false
+        },
+        {
+            "Address"       : "0x0009",
+            "Access"        : "ReadWrite",
+            "Name"          : "Изменение настроек",
+            "Category"      : "Hiden",
+            "Serializable"  : false
+        },
+        {
+            "Address"       : "0x000A",
+            "Access"        : "ReadWrite",
+            "Name"          : "Калибровка опорника",
+            "Category"      : "Настройка",
+            "Description"   : "Флаг перевода датчика в режим, при котором он на одной из ног передает сигнал с опорного генератора, перестает общаться по протоколу"
+        },
+        {
+            "Address"       : "0x000B",
+            "Access"        : "ReadWrite",
+            "Name"          : "Режим непрерывной выдачи данных",
+            "Category"      : "Hiden"
+        },
+        {
+            "Address"       : "0x000C",
+            "Access"        : "ReadWrite",
+            "Name"          : "Режим энергосбережения",
+            "Category"      : "Настройка"
+        }
+    ],
+    "DiscreteInputs"    :
+        [
+        {
+            "Address"       : "0x0000",
+            "Name"          : "Неисправность канала давления",
+            "Category"      : "Флаги ощибок"
+        },
+        {
+            "Address"       : "0x0001",
+            "Name"          : "Неисправность канала температуры",
+            "Category"      : "Флаги ощибок"
+        },
+        {
+            "Address"       : "0x0002",
+            "Name"          : "Критическая температура датчика",
+            "Category"      : "Флаги ощибок"
+        },
+        {
+            "Address"       : "0x0003",
+            "Name"          : "Критическая температура электроники",
+            "Category"      : "Флаги ощибок"
+        },
+        {
+            "Address"       : "0x0004",
+            "Name"          : "Неверные настройки датчика давления",
+            "Category"      : "Флаги ощибок"
+        },
+        {
+            "Address"       : "0x0005",
+            "Name"          : "Неверные настройки датчика температуры",
+            "Category"      : "Флаги ощибок"
+        }
+    ]
+}
