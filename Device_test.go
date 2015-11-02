@@ -6,31 +6,35 @@ import (
 	"reflect"
 	"os"
 	"fmt"
+	"errors"
 )
 
-func TestReflection(t *testing.T) {
-	fi, err := os.Open("memmaps/DB00.json")
+func ReadJsonFile(filename string) ([]byte, error) {
+	fi, err := os.Open(filename)
     if err != nil {
-        t.Error(err)
-        return
+        return nil, err
     }
-    defer func() {
-        if err := fi.Close(); err != nil {
-            t.Error(err)
-        }
-    }()
+    defer fi.Close()
     
     stat, err := fi.Stat()
     if err != nil {
-    	t.Error(err)
-        return
+    	return nil, err
     }
     data := make([]byte, stat.Size())
     if n, err := fi.Read(data); err != nil || n != cap(data) {
-    	t.Error("Read file error")
-    	return
+    	return nil, errors.New("Read file error")
     }
-    var jsonData map[string]interface{}
+    return data, nil
+}
+
+func TestReflection(t *testing.T) {
+	data, err := ReadJsonFile("memmaps/DB00.json")
+	if err != nil {
+		t.Error(err)
+    	return
+	}
+	
+    var jsonData ModbusRTUDeviceMap
     if err = json.Unmarshal(data, &jsonData); err != nil {
     	t.Error(err)
     	return
@@ -40,9 +44,40 @@ func TestReflection(t *testing.T) {
     typeOfT := s.Type()
 	for i := 0; i < s.NumField(); i++ {
 	    f := s.Field(i)
-	    fmt.Printf("%d: %s %s = %v\n", i,
-	        typeOfT.Field(i).Name, f.Type(), f.Interface())
+	    switch f.Interface().(type) {
+	    	default:
+	    		fmt.Printf("%d: %s %s = %v\n", i,
+	        		typeOfT.Field(i).Name, f.Type(), f.Interface())
+	    }    
     }
 }
 
+func TestParce(t *testing.T) {
+	data, err := ReadJsonFile("memmaps/DB00.json")
+	if err != nil {
+		t.Error(err)
+    	return
+	}
+	
+    var jsonData ModbusRTUDeviceMap
+    if err = json.Unmarshal(data, &jsonData); err != nil {
+    	t.Error(err)
+    	return
+    }
+    
+    if v, err := DecodeHex(string(jsonData.DevID)); err != nil {
+    	t.Error(err)
+    } else {
+    	t.Log(fmt.Sprintf("Found ID = %d", v))
+    }
+    // decodong cells
+    var cells []ModbusCellMap
+    if err = json.Unmarshal(([]byte)(jsonData.HoldingRegisters), &cells); err != nil {
+    	t.Error(err)
+    	return
+    }
+    for n, v := range cells {
+    	t.Logf("%d: %s", n, v.Name)
+    }
+}
 

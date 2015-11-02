@@ -12,7 +12,6 @@ type AbstractCell interface {
 	Name() string
 	Category() string
 	Description() string
-	Variants() interface{}
-	variantsAdvanced() map[string]interface{}
+	Variants() map[string]interface{}
 }
 
