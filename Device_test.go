@@ -76,8 +76,6 @@ func TestParce(t *testing.T) {
     	t.Error(err)
     	return
     }
-    for n, v := range cells {
-    	t.Logf("%d: %s", n, v.Name)
-    }
+    t.Logf("Found %d cells", len(cells))
 }
 
