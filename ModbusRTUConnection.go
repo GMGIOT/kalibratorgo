@@ -13,19 +13,19 @@ import "C"
 import (
 	"errors"
 	"fmt"
-	"regexp"
-	"strconv"
-	"runtime"
 	"log"
-	"time"
 	"math"
+	"regexp"
+	"runtime"
+	"strconv"
+	"time"
 	"unsafe"
 )
 
 const (
-	str_ModbusRTU = "ModbusRTU"
+	str_ModbusRTU        = "ModbusRTU"
 	RTU_CONST_FIELDS_LEN = 4
-	
+
 	RTU_01_LEN = 4
 	RTU_02_LEN = RTU_01_LEN
 	RTU_03_LEN = RTU_01_LEN
@@ -35,7 +35,7 @@ const (
 	RTU_10_LEN = RTU_0F_LEN
 )
 
-var parser = regexp.MustCompile(`(\d)([A-Z])(\d)`) 
+var parser = regexp.MustCompile(`(\d)([A-Z])(\d)`)
 
 var index = 0
 
@@ -46,16 +46,16 @@ type ioCtlHook interface {
 
 type ModbusRTUConnection struct {
 	Connection
-	id 					int
-	deviceName			string
-	speed				int
-	serialMode			string
-	attachedDevices		[](*ModbusRTUDevice)
-	hook				ioCtlHook
-	
-	ctx					*C.modbus_t
-	
-	rwCtlChan			chan int
+	id              int
+	deviceName      string
+	speed           int
+	serialMode      string
+	attachedDevices [](*ModbusRTUDevice)
+	hook            ioCtlHook
+
+	ctx *C.modbus_t
+
+	rwCtlChan chan int
 }
 
 var ModbusRTUConnections [](*ModbusRTUConnection)
@@ -66,21 +66,21 @@ func NewModbusRTUConnection(DeviceName string,
 	for _, connection := range ModbusRTUConnections {
 		if connection.Device() == DeviceName {
 			if connection.serialMode == SerialMode {
-				return connection, nil	
+				return connection, nil
 			} else {
 				return nil, errors.New(
 					fmt.Sprintf("Device '%s' used by connection %d, mode '%s'",
-					DeviceName, connection.ID(), connection.serialMode))
+						DeviceName, connection.ID(), connection.serialMode))
 			}
 		}
 	}
-	
-	result := &ModbusRTUConnection{ deviceName : DeviceName, speed : Speed, 
-		serialMode : SerialMode, hook : Hook }
-	
+
+	result := &ModbusRTUConnection{deviceName: DeviceName, speed: Speed,
+		serialMode: SerialMode, hook: Hook}
+
 	if Hook != nil {
 		result.rwCtlChan = make(chan int)
-		
+
 		go func(oneByteTime time.Duration) {
 			for v := range result.rwCtlChan {
 				if v < 0 {
@@ -90,74 +90,74 @@ func NewModbusRTUConnection(DeviceName string,
 				time.Sleep(oneByteTime * time.Duration(v))
 				result.hook.OnEndTransmitting()
 			}
-		}(time.Duration(math.Ceil(float64(time.Second * (1 + 8 + 0 + 1)) / float64(result.speed))))
+		}(time.Duration(math.Ceil(float64(time.Second*(1+8+0+1)) / float64(result.speed))))
 	}
-	
+
 	// try open
 	match := parser.FindStringSubmatch(result.serialMode)
 	if len(match) != (1 + 3) {
 		result.ctx = C.modbus_new_rtu(C.CString(result.deviceName), C.int(result.speed),
 			C.char('N'), C.int(8), C.int(1))
 	} else {
-		databits, _ := strconv.ParseInt(match[1 + 0], 10, 32)
-		stopbits, _ := strconv.ParseInt(match[1 + 2], 10, 32)
+		databits, _ := strconv.ParseInt(match[1+0], 10, 32)
+		stopbits, _ := strconv.ParseInt(match[1+2], 10, 32)
 		result.ctx = C.modbus_new_rtu(C.CString(result.deviceName), C.int(result.speed),
-			C.char(match[1 + 1][0]),
+			C.char(match[1+1][0]),
 			C.int(databits),
 			C.int(stopbits))
 	}
 	if result.ctx == nil {
 		return nil, errors.New(fmt.Sprintf("Unable to create the libmodbus context\n%s",
-				C.GoString(C.modbus_strerror(C.getErrno()))))
+			C.GoString(C.modbus_strerror(C.getErrno()))))
 	}
 	runtime.SetFinalizer(result, finaliserModbusRTUConnection)
-	
+
 	result.id = index
 	index++
 	if len(ModbusRTUConnections) != 0 &&
-		ModbusRTUConnections[len(ModbusRTUConnections) - 1] == nil {
-		for i:= len(ModbusRTUConnections) - 1; i > -1; i-- {
+		ModbusRTUConnections[len(ModbusRTUConnections)-1] == nil {
+		for i := len(ModbusRTUConnections) - 1; i > -1; i-- {
 			if ModbusRTUConnections[i] != nil {
-				ModbusRTUConnections[i + 1] = result
+				ModbusRTUConnections[i+1] = result
 				break
 			}
 		}
 	} else {
 		ModbusRTUConnections = append(ModbusRTUConnections, result)
 	}
-	
+
 	return result, nil
 }
 
-func (this *ModbusRTUConnection) ID() int {
+func (this ModbusRTUConnection) ID() int {
 	return this.id
 }
 
-func (this *ModbusRTUConnection) Type() string {
+func (this ModbusRTUConnection) Type() string {
 	return str_Serial
 }
 
-func (this *ModbusRTUConnection) Device() string {
+func (this ModbusRTUConnection) Device() string {
 	return this.deviceName
 }
 
-func (this *ModbusRTUConnection) Options() map[string]interface{} {
-	return map[string]interface{}{"speed" : this.speed, "mode" : this.serialMode } 
+func (this ModbusRTUConnection) Options() map[string]interface{} {
+	return map[string]interface{}{"speed": this.speed, "mode": this.serialMode}
 }
 
-func (this *ModbusRTUConnection) Protocol() string {
+func (this ModbusRTUConnection) Protocol() string {
 	return str_ModbusRTU
 }
 
-func (this *ModbusRTUConnection) Status() int {
+func (this ModbusRTUConnection) Status() int {
 	if len(this.attachedDevices) > 0 {
 		return Connection_used
 	} else {
 		return Connection_available
-	} 
+	}
 }
 
-func (this *ModbusRTUConnection) UsedBy() int {
+func (this ModbusRTUConnection) UsedBy() int {
 	return len(this.attachedDevices)
 }
 
@@ -170,13 +170,13 @@ func finaliserModbusRTUConnection(obj *ModbusRTUConnection) {
 	}
 }
 
-func (this *ModbusRTUConnection) Timeout() time.Duration {
+func (this ModbusRTUConnection) Timeout() time.Duration {
 	var sec, usec C.uint32_t
 	C.modbus_get_response_timeout(this.ctx, &sec, &usec)
-	return time.Duration(sec) * time.Second + time.Duration(usec) * time.Microsecond
+	return time.Duration(sec)*time.Second + time.Duration(usec)*time.Microsecond
 }
-	
-func (this *ModbusRTUConnection) SetTimeout(timeout time.Duration) error {
+
+func (this ModbusRTUConnection) SetTimeout(timeout time.Duration) error {
 	var sec C.uint32_t = C.uint32_t(timeout / time.Second)
 	var usec C.uint32_t = C.uint32_t((timeout - time.Duration(sec)) / time.Microsecond)
 	if C.modbus_set_response_timeout(this.ctx, sec, usec) == -1 {
@@ -185,7 +185,7 @@ func (this *ModbusRTUConnection) SetTimeout(timeout time.Duration) error {
 	return nil
 }
 
-func (this *ModbusRTUConnection) SetDebug(flag bool) {
+func (this ModbusRTUConnection) SetDebug(flag bool) {
 	var f C.int = 0
 	if flag {
 		f = 1
@@ -193,25 +193,25 @@ func (this *ModbusRTUConnection) SetDebug(flag bool) {
 	C.modbus_set_debug(this.ctx, f)
 }
 
-func (this *ModbusRTUConnection) ProcessHook(messageLen int) {
+func (this ModbusRTUConnection) ProcessHook(messageLen int) {
 	messageLen += RTU_CONST_FIELDS_LEN
 	this.rwCtlChan <- messageLen
 }
 
-func (this *ModbusRTUConnection) ReadCoils(slave int8, startAddr int, nb int) ([]bool, error) {
+func (this ModbusRTUConnection) ReadCoils(slave int8, startAddr int, nb int) ([]bool, error) {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return nil, errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	var space [65535]C.uint8_t
-	 
+
 	this.ProcessHook(RTU_01_LEN)
 	if ressived := C.modbus_read_bits(this.ctx, C.int(startAddr), C.int(nb),
 		&(space[0])); int(ressived) != nb {
 		if ressived == -1 {
 			errno := C.getErrno()
 			if errno == C.EMBMDATA {
-				return nil, errors.New(C.GoString(C.modbus_strerror(errno)))	
+				return nil, errors.New(C.GoString(C.modbus_strerror(errno)))
 			}
 			return nil, errors.New(fmt.Sprintf("Unknown modbus error errno=%d", errno))
 		} else if ressived == 0 {
@@ -226,17 +226,17 @@ func (this *ModbusRTUConnection) ReadCoils(slave int8, startAddr int, nb int) ([
 		}
 		return result, nil
 	}
-	
+
 	return nil, nil
 }
 
-func (this *ModbusRTUConnection) ReadInputBits(slave int8, startAddr int, nb int) ([]bool, error) {
+func (this ModbusRTUConnection) ReadInputBits(slave int8, startAddr int, nb int) ([]bool, error) {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return nil, errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	var space [65535]C.uint8_t
-	 
+
 	this.ProcessHook(RTU_02_LEN)
 	if ressived := C.modbus_read_input_bits(this.ctx, C.int(startAddr), C.int(nb),
 		&(space[0])); int(ressived) != nb {
@@ -258,17 +258,17 @@ func (this *ModbusRTUConnection) ReadInputBits(slave int8, startAddr int, nb int
 		}
 		return result, nil
 	}
-	
+
 	return nil, nil
 }
 
-func (this *ModbusRTUConnection) ReadHoldings(slave int8, startAddr int, nb int) ([]uint16, error) {
+func (this ModbusRTUConnection) ReadHoldings(slave int8, startAddr int, nb int) ([]uint16, error) {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return nil, errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	var space [65535]C.uint16_t
-	 
+
 	this.ProcessHook(RTU_03_LEN)
 	if ressived := C.modbus_read_registers(this.ctx, C.int(startAddr),
 		C.int(nb), &(space[0])); int(ressived) != nb {
@@ -288,19 +288,19 @@ func (this *ModbusRTUConnection) ReadHoldings(slave int8, startAddr int, nb int)
 		}
 		return result, nil
 	}
-	
+
 	return nil, nil
 }
 
-func (this *ModbusRTUConnection) ReadInputRegisters(slave int8, startAddr int, nb int) ([]uint16, error) {
+func (this ModbusRTUConnection) ReadInputRegisters(slave int8, startAddr int, nb int) ([]uint16, error) {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return nil, errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	var space [65535]C.uint16_t
-	 
+
 	this.ProcessHook(RTU_03_LEN)
-	if ressived := C. modbus_read_input_registers(this.ctx, C.int(startAddr),
+	if ressived := C.modbus_read_input_registers(this.ctx, C.int(startAddr),
 		C.int(nb), &(space[0])); int(ressived) != nb {
 		if ressived == -1 {
 			errno := C.getErrno()
@@ -318,80 +318,80 @@ func (this *ModbusRTUConnection) ReadInputRegisters(slave int8, startAddr int, n
 		}
 		return result, nil
 	}
-	
+
 	return nil, nil
 }
 
-func (this *ModbusRTUConnection) WriteSingleCoil(slave int8, addr int, value bool) error {
+func (this ModbusRTUConnection) WriteSingleCoil(slave int8, addr int, value bool) error {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	var v C.int
 	if value {
 		v = C.TRUE
 	}
-	
+
 	this.ProcessHook(RTU_05_LEN)
 	if C.modbus_write_bit(this.ctx, C.int(addr), v) != 1 {
 		return errors.New(C.GoString(C.modbus_strerror(C.getErrno())))
 	}
-	
+
 	return nil
 }
 
-func (this *ModbusRTUConnection) WriteHolding(slave int8, addr int, value uint16) error {
+func (this ModbusRTUConnection) WriteHolding(slave int8, addr int, value uint16) error {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	this.ProcessHook(RTU_06_LEN)
 	if C.modbus_write_register(this.ctx, C.int(addr), C.int(value)) != 1 {
 		return errors.New(C.GoString(C.modbus_strerror(C.getErrno())))
 	}
-	
+
 	return nil
 }
 
-func (this *ModbusRTUConnection) WriteCoils(slave int8, startAddr int, values []bool) error {
+func (this ModbusRTUConnection) WriteCoils(slave int8, startAddr int, values []bool) error {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	vals := make([]C.uint8_t, len(values))
 	for i, v := range values {
 		if v {
 			vals[i] = C.TRUE
 		}
 	}
-	
-	this.ProcessHook(RTU_0F_LEN + int(math.Ceil(float64(len(values)) / 8.0)))
+
+	this.ProcessHook(RTU_0F_LEN + int(math.Ceil(float64(len(values))/8.0)))
 	if C.modbus_write_bits(this.ctx, C.int(startAddr), C.int(len(values)), &vals[0]) < 0 {
-		return errors.New(C.GoString(C.modbus_strerror(C.getErrno())))		
+		return errors.New(C.GoString(C.modbus_strerror(C.getErrno())))
 	}
 	return nil
 }
 
-func (this *ModbusRTUConnection) WriteHoldings(slave int8, startAddr int, values []uint16) error {
+func (this ModbusRTUConnection) WriteHoldings(slave int8, startAddr int, values []uint16) error {
 	if C.modbus_set_slave(this.ctx, C.int(slave)) != 0 {
 		return errors.New(fmt.Sprintf("Invalid slave id %d", slave))
 	}
-	
+
 	vals := make([]C.uint16_t, len(values))
 	for i, v := range values {
 		vals[i] = C.uint16_t(v)
 	}
-	
-	this.ProcessHook(RTU_10_LEN + len(values) * int(unsafe.Sizeof(vals[0])))
+
+	this.ProcessHook(RTU_10_LEN + len(values)*int(unsafe.Sizeof(vals[0])))
 	if C.modbus_write_registers(this.ctx, C.int(startAddr), C.int(len(values)), &vals[0]) < 0 {
-		return errors.New(C.GoString(C.modbus_strerror(C.getErrno())))		
+		return errors.New(C.GoString(C.modbus_strerror(C.getErrno())))
 	}
 	return nil
 }
 
-func (this *ModbusRTUConnection) AttachedDevice(dev AbstarctDevice) error {
+func (this ModbusRTUConnection) AttachedDevice(dev AbstarctDevice) error {
 	if d, ok := dev.(ModbusRTUDevice); ok {
-		if d.Connection() != this {
+		if d.Connection() != &this {
 			this.attachedDevices = append(this.attachedDevices, &d)
 			d.BindTo(this)
 		} else {
@@ -401,7 +401,33 @@ func (this *ModbusRTUConnection) AttachedDevice(dev AbstarctDevice) error {
 	return errors.New(fmt.Sprintf("Device requiered incompotable protocol %s", dev.Protocol()))
 }
 
-func (this *ModbusRTUConnection) Close(recursive bool) error {
+func (this ModbusRTUConnection) RemoveDevice(dev *ModbusRTUDevice) error {
+	if dev.Connection() != &this {
+		return errors.New("This device belongs to another connection")
+	}
+
+	var n int
+	var item *ModbusRTUDevice
+	var found bool = false
+	for n, item = range this.attachedDevices {
+		if item == dev {
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return errors.New(fmt.Sprintf("No device ID=%s in devices list of connection %s", dev.ID(),
+			this.ID()))
+	}
+
+	this.attachedDevices, this.attachedDevices[len(this.attachedDevices)-1] =
+		append(this.attachedDevices[:n], this.attachedDevices[n+1:]...), nil
+
+	return nil
+}
+
+func (this ModbusRTUConnection) Close(recursive bool) error {
 	if recursive {
 		for _, dev := range this.attachedDevices {
 			dev.Close(true)
@@ -414,7 +440,7 @@ func (this *ModbusRTUConnection) Close(recursive bool) error {
 		var n int
 		var item *ModbusRTUConnection
 		for n, item = range ModbusRTUConnections {
-			if item == this {
+			if item == &this {
 				break
 			}
 		}

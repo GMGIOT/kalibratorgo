@@ -35,13 +35,13 @@ var accessMap = map[string]int{
 type ModbusCell struct {
 	AbstractCell
 
-	Address      uint16
+	pAddress     uint16
 	ValueType    reflect.Kind
 	Access       int
-	Name         string
-	Category     string
-	Description  string
-	Variants     map[string]interface{}
+	pName        string
+	pCategory    string
+	pDescription string
+	pVariants    map[string]interface{}
 	Serializable bool
 	hint         CellHint
 }
@@ -85,7 +85,7 @@ func NewCellFromJSONMap(c *ModbusCell, m ModbusCellMap) error {
 	if err != nil {
 		return err
 	} else {
-		c.Address = uint16(t)
+		c.pAddress = uint16(t)
 	}
 
 	if m.ValueType != "" {
@@ -102,9 +102,9 @@ func NewCellFromJSONMap(c *ModbusCell, m ModbusCellMap) error {
 		}
 	}
 
-	c.Category = m.Category
-	c.Name = m.Name
-	c.Description = m.Description
+	c.pCategory = m.Category
+	c.pName = m.Name
+	c.pDescription = m.Description
 
 	if string(m.Serializable) != "" {
 		if err := json.Unmarshal(m.Serializable, &c.Serializable); err != nil {
@@ -117,7 +117,7 @@ func NewCellFromJSONMap(c *ModbusCell, m ModbusCellMap) error {
 			if c.ValueType != reflect.TypeOf(v).Kind() {
 				return errors.New(fmt.Sprintf("Can't convert %v to cell type (%v)", v, c.ValueType))
 			} else {
-				c.Variants[s] = v
+				c.pVariants[s] = v
 			}
 		} else {
 			return errors.New(fmt.Sprint("%v inconvertable to sring", v))
@@ -137,13 +137,13 @@ func NewCellFromJSONMap(c *ModbusCell, m ModbusCellMap) error {
 				}
 				if strings.Contains(sv, "0x") {
 					if t, err = DecodeHex(sv); err == nil {
-						c.Variants[varianStruct.Display] = t
+						c.pVariants[varianStruct.Display] = t
 						goto OK
 					}
 				}
 				return errors.New(fmt.Sprintf("Can't convert %v to cell type (%v)", varianStruct.Value, c.ValueType))
 			} else {
-				c.Variants[varianStruct.Display] = varianStruct.Value
+				c.pVariants[varianStruct.Display] = varianStruct.Value
 			}
 		} else {
 			return errors.New(fmt.Sprintf("can't parce variant \"%v\"", v))
@@ -172,6 +172,45 @@ func DecodeCellsJSON(data json.RawMessage, hint CellHint) ([]ModbusCell, error) 
 	return result, nil
 }
 
-func (this* ModbusCell) ID() string {
-	return "0"
+func (this ModbusCell) ID() string {
+	return fmt.Sprintf("%s_%s%d", this.Parent().ID(), this.Type(), this.Address)
+}
+
+func (this ModbusCell) Type() string {
+	switch this.hint.(type) {
+	case HoldingCellHint:
+		return "H"
+	case InputCellHint:
+		return "I"
+	case CoilCellHint:
+		return "C"
+	case DiscreteInputCellHint:
+		return "D"
+	default:
+		return ""
+	}
+}
+
+func (this ModbusCell) Address() uint16 {
+	return this.pAddress
+}
+
+func (this ModbusCell) Name() string {
+	return this.pName
+}
+
+func (this ModbusCell) Category() string {
+	return this.pCategory
+}
+
+func (this ModbusCell) Description() string {
+	return this.pDescription
+}
+
+func (this ModbusCell) Variants() map[string]interface{} {
+	return this.pVariants
+}
+
+func (this ModbusCell) Close() {
+	
 }
