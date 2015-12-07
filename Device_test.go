@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"testing"
-	"reflect"
 	"os"
 	"fmt"
 	"errors"
@@ -25,31 +24,6 @@ func ReadJsonFile(filename string) ([]byte, error) {
     	return nil, errors.New("Read file error")
     }
     return data, nil
-}
-
-func TestReflection(t *testing.T) {
-	data, err := ReadJsonFile("memmaps/DB00.json")
-	if err != nil {
-		t.Error(err)
-    	return
-	}
-	
-    var jsonData ModbusRTUDeviceJSONMap
-    if err = json.Unmarshal(data, &jsonData); err != nil {
-    	t.Error(err)
-    	return
-    } 
-    
-    s := reflect.ValueOf(jsonData)
-    typeOfT := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-	    f := s.Field(i)
-	    switch f.Interface().(type) {
-	    	default:
-	    		fmt.Printf("%d: %s %s = %v\n", i,
-	        		typeOfT.Field(i).Name, f.Type(), f.Interface())
-	    }    
-    }
 }
 
 func TestParce(t *testing.T) {

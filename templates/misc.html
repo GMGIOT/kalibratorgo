@@ -1,0 +1,117 @@
+{{ define "index" }}
+
+{{ template "header" }}
+
+<div id="main">
+
+<div id="primary">
+  <div id="content" role="main">
+  
+  <div id="crumbs">
+  	<a href="#">Home</a> <span class="delimiter">/</span> 
+  	<span class="current">Misc</span>
+  </div>
+				
+
+  <!-- begin article -->
+  <article class="page hentry">
+  	<header class="entry-header">
+		<h1 class="entry-title"><a href="#">Misc</a></h1>
+    </header>
+    <!-- .entry-header -->
+    
+    <div class="entry-content">
+    
+    <!-- Begin Column -->
+        <div class="one-half">
+          <h3>Tabs</h3>
+          <ul class="tabs">
+            <li><a href="#tab1">This is</a></li>
+            <li><a href="#tab2">Tabbed</a></li>
+            <li><a href="#tab3">Content</a></li>
+          </ul>
+          <div class="tab_container">
+            <div id="tab1" class="tab_content">
+              <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc rhoncus tortor quis eros bibendum a tempus est dapibus.</p>
+            </div>
+            <div id="tab2" class="tab_content">
+              <p>Etiam molestie, risus eu gravida lobortis, velit sapien aliquam lectus, nec hendrerit lectus erat ac libero. Aenean fermentum luctus viverra. Pellentesque id lectus ante, vel tristique elit. Fusce mattis, purus non consectetur cursus, justo nisi viverra sem, ac lobortis ipsum sapien vel purus. Vivamus aliquet gravida nibh sit amet accumsan. Fusce et lorem nunc. </p>
+            </div>
+            <div id="tab3" class="tab_content">
+              <p>Nulla non tortor eget ligula dapibus semper non ut mauris. Nam feugiat, lorem a tempus auctor, odio nisl porttitor lacus, ut ultrices neque massa a odio. Pellentesque sit amet leo dictum nisl tempor malesuada id ut magna. Etiam non mauris eget massa sagittis euismod. Aliquam lectus nulla, consequat eget molestie id, malesuada sit amet lectus. Pellentesque eget justo sit amet nunc adipiscing semper at ac quam.</p>
+            </div>
+          </div>
+        </div>
+        <!-- End Column --> 
+        <!-- Begin Column -->
+        <div class="one-half last">
+          <h3>Toggle</h3>
+          <!-- Begin Toggle -->
+          <div class="toggle">
+            <h4 class="title">Click to title</h4>
+            <div class="togglebox">
+              <div>
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc rhoncus tortor quis eros bibendum a tempus est dapibus. Vivamus consectetur quam eu tellus porttitor ultrices. Nunc metus massa, ullamcorper sit amet malesuada a, porttitor in tellus.</p>
+              </div>
+            </div>
+          </div>
+          <!-- End Toggle --> 
+          
+          <!-- Begin Toggle -->
+          <div class="toggle">
+            <h4 class="title">Click to title</h4>
+            <div class="togglebox">
+              <div>
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc rhoncus tortor quis eros bibendum a tempus est dapibus. Vivamus consectetur quam eu tellus porttitor ultrices. Nunc metus massa, ullamcorper sit amet malesuada a, porttitor in tellus.</p>
+              </div>
+            </div>
+          </div>
+          <!-- End Toggle --> 
+          
+          <!-- Begin Toggle -->
+          <div class="toggle">
+            <h4 class="title">Click to title</h4>
+            <div class="togglebox">
+              <div>
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc rhoncus tortor quis eros bibendum a tempus est dapibus. Vivamus consectetur quam eu tellus porttitor ultrices. Nunc metus massa, ullamcorper sit amet malesuada a, porttitor in tellus.</p>
+              </div>
+            </div>
+          </div>
+          <!-- End Toggle --> 
+          
+        </div>
+        <!-- End Column -->
+        <div class="clear"></div>
+        
+        <hr />
+		
+		<div class="one-half">
+			<h3>Boxes</h3>
+			<div class="info-box">This is an information box</div>
+			<div class="download-box">This is a download box</div>
+			<div class="warning-box">This is a warning box</div>
+			<div class="note-box">This is a note box</div>
+		</div>
+		<div class="one-half last">
+			<h3>Map</h3>
+			<div class="map "><iframe width="1040" height="227" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?ll=40.967132,29.07403&amp;spn=0.047894,0.132093&amp;vpsrc=6&amp;t=m&amp;z=14&amp;output=embed"></iframe></div>
+		</div>
+		<div class="clear"></div>
+
+ 	</div>
+    <!-- .entry-content -->
+    
+  </article>
+  <!-- end article -->
+  
+
+  
+  </div><!-- #content -->
+</div><!-- #primary -->
+
+
+</div><!-- #main -->
+
+{{ template "footer" }}
+
+{{ end }}
