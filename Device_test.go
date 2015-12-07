@@ -34,7 +34,7 @@ func TestReflection(t *testing.T) {
     	return
 	}
 	
-    var jsonData ModbusRTUDeviceMap
+    var jsonData ModbusRTUDeviceJSONMap
     if err = json.Unmarshal(data, &jsonData); err != nil {
     	t.Error(err)
     	return
@@ -59,7 +59,7 @@ func TestParce(t *testing.T) {
     	return
 	}
 	
-    var jsonData ModbusRTUDeviceMap
+    var jsonData ModbusRTUDeviceJSONMap
     if err = json.Unmarshal(data, &jsonData); err != nil {
     	t.Error(err)
     	return

@@ -7,6 +7,7 @@ import (
 type AbstractCell interface {
 	io.Reader
 	io.Writer
+	ID() string
 	Type() string
 	Address() uint16
 	Name() string

@@ -17,7 +17,7 @@ type ModbusRTUDevice struct {
 	MaxSimulateneousCellsToRead int
 }
 
-type ModbusRTUDeviceMap struct {
+type ModbusRTUDeviceJSONMap struct {
 	DevID				json.RawMessage	`json:"DevID"`
 	Class				string			`json:"Class"`
 	Description			string          `json:"Description"`
@@ -28,14 +28,24 @@ type ModbusRTUDeviceMap struct {
     DiscreteInputs		json.RawMessage `json:"DiscreteInputs"`
 }
 
-func NewModbusRTUDevice(DeviceMap []byte) (*ModbusRTUDevice, error) {
-	var devmap ModbusRTUDeviceMap
+type CellMapPair struct {
+	value 				*json.RawMessage
+	hint 				CellHint
+}
+
+func NewModbusRTUDeviceFromJSON(DeviceMap []byte) (*ModbusRTUDevice, error) {
+	var devmap ModbusRTUDeviceJSONMap
 	var err error
 	var t int64
 	
 	if err = json.Unmarshal(DeviceMap, &devmap); err != nil {
 		return nil, err
 	}
+	
+	pairs := [...]CellMapPair{ {&devmap.HoldingRegisters, &HoldingCellHint{}}, 
+		{&devmap.InputRegisters, &InputCellHint{}},
+		{&devmap.Coils, &CoilCellHint{}},
+		{&devmap.DiscreteInputs, &DiscreteInputCellHint{}} }
 	
 	result := &ModbusRTUDevice{
 		Class : devmap.Class, Description : devmap.Description, 
@@ -52,10 +62,9 @@ func NewModbusRTUDevice(DeviceMap []byte) (*ModbusRTUDevice, error) {
 		result.DevID = uint16(t)
 	}
 	
-	for _, f := range []*json.RawMessage{ &devmap.HoldingRegisters, &devmap.InputRegisters,
-		&devmap.Coils, &devmap.DiscreteInputs } {
-		if cells, err := DecodeCells(*f) ; err == nil {
-		result.cells = append(result.cells, cells...)
+	for _, f := range pairs {
+		if cells, err := DecodeCellsJSON(*f.value, f.hint) ; err == nil {
+			result.cells = append(result.cells, cells...)
 		} else {
 			return nil, err
 		}		

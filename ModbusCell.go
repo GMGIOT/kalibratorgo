@@ -4,61 +4,174 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
+	"strconv"
+	"strings"
 )
+
+const (
+	MB_CELL_ACCESS_INVALID = 0
+	MB_CELL_ACCESS_READ    = 1 << 0
+	MB_CELL_ACCESS_WRITE   = 1 << 1
+	MB_CELL_ACCESS_RW      = MB_CELL_ACCESS_READ | MB_CELL_ACCESS_WRITE
+)
+
+var typeMap = map[string]reflect.Kind{
+	"uint16_t": reflect.Uint16,
+	"int16_t":  reflect.Int16,
+	"uint32_t": reflect.Uint32,
+	"int32_t":  reflect.Int32,
+	"float":    reflect.Float32,
+	"double":   reflect.Float64,
+	"bool":     reflect.Bool,
+}
+
+var accessMap = map[string]int{
+	"ReadOnly":  MB_CELL_ACCESS_READ,
+	"WriteOnly": MB_CELL_ACCESS_WRITE,
+	"ReadWrite": MB_CELL_ACCESS_RW,
+}
 
 type ModbusCell struct {
 	AbstractCell
-	
-	Address				uint16	
-	ValueType     		string					
-    Access        		string					
-    Name          		string					
-    Category      		string					
-    Description			string							
-    Variants			map[string]interface{}	
-    Serializable		bool					
+
+	Address      uint16
+	ValueType    reflect.Kind
+	Access       int
+	Name         string
+	Category     string
+	Description  string
+	Variants     map[string]interface{}
+	Serializable bool
+	hint         CellHint
 }
 
 type ModbusCellMap struct {
-	Address				json.RawMessage			`json:"Address"`
-	ValueType     		string					`json:"ValueType"`
-    Access        		string					`json:"Access"`
-    Name          		string					`json:"Name"`
-    Category      		string					`json:"Category"`
-    Description			string					`json:"Description"`
-    Variants			[]interface{}			`json:"variants"`
-    VariantsAdvanced	[]interface{}			`json:"variantsAdvanced"`
-    Serializable		bool					`json:"Serializable"`
+	Address          json.RawMessage `json:"Address"`
+	ValueType        string          `json:"ValueType"`
+	Access           string          `json:"Access"`
+	Name             string          `json:"Name"`
+	Category         string          `json:"Category"`
+	Description      string          `json:"Description"`
+	Variants         []interface{}   `json:"variants"`
+	VariantsAdvanced []interface{}   `json:"variantsAdvanced"`
+	Serializable     json.RawMessage `json:"Serializable"`
 }
 
-
-func NewCell() (*ModbusCell, error) {
-	return &ModbusCell{}, nil
+type AdvancedVariant struct {
+	Display string      `json:"Display"`
+	Value   interface{} `json:"value"`
 }
 
-func NewCellFromMap(m ModbusCellMap) (*ModbusCell, error) {
-	result := &ModbusCell{ Access : m.Access, Name : m.Name, Category : m.Category,
-		 Description : m.Description, Serializable : m.Serializable }
-	
-	
-	
-	return result, nil
+func NewCell(hint CellHint) *ModbusCell {
+	cell := &ModbusCell{Serializable: true}
+
+	cell.hint = hint
+	if hint != nil {
+		hint.SetDefaults(cell)
+	}
+
+	return cell
 }
 
-func DecodeCells(data json.RawMessage) ([]ModbusCell, error) {
+func NewCellFromJSONMap(c *ModbusCell, m ModbusCellMap) error {
+	var t int64
+	var err error
+	if strings.Contains(string(m.Address), "0x") {
+		t, err = DecodeHex(string(m.Address))
+	} else {
+		t, err = strconv.ParseInt(string(m.Address), 0, 64)
+	}
+	if err != nil {
+		return err
+	} else {
+		c.Address = uint16(t)
+	}
+
+	if m.ValueType != "" {
+		c.ValueType = typeMap[m.ValueType]
+		if c.Type == nil {
+			return errors.New(fmt.Sprintf("Failed to parce type of cell \"%s\"", m.ValueType))
+		}
+	}
+
+	if m.Access != "" {
+		c.Access = accessMap[m.Access]
+		if c.Access == 0 {
+			return errors.New(fmt.Sprintf("Access info incorrect for cell \"%s\"", m.Access))
+		}
+	}
+
+	c.Category = m.Category
+	c.Name = m.Name
+	c.Description = m.Description
+
+	if string(m.Serializable) != "" {
+		if err := json.Unmarshal(m.Serializable, &c.Serializable); err != nil {
+			return err
+		}
+	}
+
+	for _, v := range m.Variants {
+		if s, ok := v.(string); ok {
+			if c.ValueType != reflect.TypeOf(v).Kind() {
+				return errors.New(fmt.Sprintf("Can't convert %v to cell type (%v)", v, c.ValueType))
+			} else {
+				c.Variants[s] = v
+			}
+		} else {
+			return errors.New(fmt.Sprint("%v inconvertable to sring", v))
+		}
+	}
+
+	for _, v := range m.VariantsAdvanced {
+		if v, ok := v.([]byte); ok {
+			var varianStruct AdvancedVariant
+			if err := json.Unmarshal(v, &varianStruct); err != nil {
+				return err
+			}
+			if c.ValueType != reflect.TypeOf(varianStruct.Value).Kind() {
+				var sv string
+				if sv, ok = (varianStruct.Value).(string); !ok {
+					panic("can't convert value to string")
+				}
+				if strings.Contains(sv, "0x") {
+					if t, err = DecodeHex(sv); err == nil {
+						c.Variants[varianStruct.Display] = t
+						goto OK
+					}
+				}
+				return errors.New(fmt.Sprintf("Can't convert %v to cell type (%v)", varianStruct.Value, c.ValueType))
+			} else {
+				c.Variants[varianStruct.Display] = varianStruct.Value
+			}
+		} else {
+			return errors.New(fmt.Sprintf("can't parce variant \"%v\"", v))
+		}
+	}
+OK:
+	return c.hint.Validete(c)
+}
+
+func DecodeCellsJSON(data json.RawMessage, hint CellHint) ([]ModbusCell, error) {
 	var result []ModbusCell
-	
+
 	var cells []ModbusCellMap
 	if err := json.Unmarshal(([]byte)(data), &cells); err != nil {
 		return nil, err
 	}
 	for n, cell := range cells {
-		if c, err := NewCellFromMap(cell); err != nil {
+		c := NewCell(hint)
+		if err := NewCellFromJSONMap(c, cell); err != nil {
 			return nil, errors.New(fmt.Sprintf("Failed to process cell %d: %s", n, err.Error()))
 		} else {
 			result = append(result, *c)
 		}
 	}
-	
+
 	return result, nil
+}
+
+func (this* ModbusCell) ID() string {
+	return "0"
 }
