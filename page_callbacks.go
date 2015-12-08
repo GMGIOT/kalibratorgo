@@ -16,7 +16,13 @@ import (
 
 const (
 	OkAnsver = "OK"
+
+	SERVER_VERSION = "0.0.1"
 )
+
+type HaderPageData struct {
+	Version string
+}
 
 var currentPath string
 var fileserverHandler http.Handler
@@ -45,8 +51,8 @@ func patchPath(name1 string, names ...string) []string {
 
 func indexHandlr(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles(patchPath(
-		"templates/index.html",
 		"templates/header.html",
+		"templates/index.html",
 		"templates/footer.html")...)
 
 	if err != nil {
@@ -57,7 +63,6 @@ func indexHandlr(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "index", nil); err != nil {
 		log.Println(err.Error())
 	}
-	//fmt.Fprint(w, "Not implemented yet")
 }
 
 func assertsServer(w http.ResponseWriter, r *http.Request) {
